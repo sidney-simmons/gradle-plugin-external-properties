@@ -86,7 +86,7 @@ externalProperties {
 | Property | Type | Description |
 | --- | --- | --- |
 | propertyContainerName | String | The name of the property container you'd use in the gradle build to get the properties. Optional. Defaults to 'props'. |
-| propertyFiles | List<File> | The list of the configured external property files. Exposed so it can be manipulated if needed. Optional. |
+| propertyFiles | List&lt;File&gt; | The list of the configured external property files. Exposed so it can be manipulated if needed. Optional. |
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
