@@ -1,6 +1,11 @@
 # gradle-plugin-external-properties
 
-gradle-plugin-external-properties is a custom gradle plugin for easily configuring external properties in your gradle build.
+gradle-plugin-external-properties is a custom gradle plugin for easily configuring external properties in your gradle build. The following external property files are loaded by default:
+
+- `[USER HOME]/.overrides/[PROJECT NAME]/build.properties`
+- `[PROJECT ROOT]/build.properties`
+
+_Note that files toward the beginning of the list take precedence over files toward the end of the list._
 
 ## Gradle Tasks
 
