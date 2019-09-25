@@ -1,0 +1,2 @@
+# gradle-plugin-external-properties
+
