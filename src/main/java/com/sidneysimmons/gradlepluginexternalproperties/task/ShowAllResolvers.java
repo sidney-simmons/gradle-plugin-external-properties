@@ -5,6 +5,7 @@ import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolve
 import com.sidneysimmons.gradlepluginexternalproperties.util.PluginUtil;
 import java.util.List;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 
 /**
@@ -31,11 +32,13 @@ public class ShowAllResolvers extends DefaultTask {
     }
 
     @Override
+    @Internal
     public String getGroup() {
         return GROUP;
     }
 
     @Override
+    @Internal
     public String getDescription() {
         return DESCRIPTION;
     }

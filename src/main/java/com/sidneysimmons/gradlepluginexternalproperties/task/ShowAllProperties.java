@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 
 /**
@@ -70,11 +71,13 @@ public class ShowAllProperties extends DefaultTask {
     }
 
     @Override
+    @Internal
     public String getGroup() {
         return GROUP;
     }
 
     @Override
+    @Internal
     public String getDescription() {
         return DESCRIPTION;
     }
