@@ -1,11 +1,39 @@
 # gradle-plugin-external-properties
 
-gradle-plugin-external-properties is a custom gradle plugin for easily configuring external properties in your gradle build. The following external property files are loaded by default:
+gradle-plugin-external-properties is a custom gradle plugin for easily configuring external properties in your gradle build.
+
+## Usage
+
+By default this plugin will load properties from the following files. Missing files will be ignored so don't feel like they must both exist.  Note that the default property files will be ignored if you decide to supply your own via the configuration (see below).  Also note that files toward the beginning of the list take precedence over files toward the end of the list.
+
+**Default property files**
 
 - `[USER HOME]/.overrides/[PROJECT NAME]/build.properties`
 - `[PROJECT ROOT]/build.properties`
 
-_Note that files toward the beginning of the list take precedence over files toward the end of the list._
+**Accessing the properties**
+
+```
+tasks.register("printPropertyValue") {
+    println props.get('some.property')
+    doLast {
+        println "My property: ${props.get('other.prop')}"
+    }
+}
+```
+
+## Configuration
+
+```
+externalProperties {
+    resolver file('C:/Users/blahblahblah/icecream.properties')
+    resolver file('C:/Users/blahblahblah/sandwich.properties')
+}
+```
+
+| Property | Type | Description |
+| --- | --- | --- |
+| resolver | File | An external property file to load. Optional. If not set the defaults above will be used. |
 
 ## Gradle Tasks
 
@@ -16,29 +44,7 @@ showAllProperties - Show all of the configured external properties.
 showAllResolvers - Show all of the configured external property resolvers.
 ```
 
-## Usage
-
-> build.gradle
-
-```
-tasks.register("printPropertyValue") {
-    doLast {
-        println "My property: ${props.getProperty('my.prop')}"
-    }
-}
-```
-
-> [USER HOME]/.overrides/[PROJECT NAME]/build.properties (loaded by default)
-
-```
-my.prop=Hello from user home!
-```
-
-> [PROJECT ROOT]/build.properties (loaded by default)
-
-```
-my.prop=Hello from project root!
-```
+## Applying the Plugin
 
 #### Enable Via Gradle Plugin Portal
 
@@ -73,25 +79,6 @@ pluginManagement {
     }
 }
 ```
-
-## Configuration
-
-```
-externalProperties {
-    // Rename the container name
-    propertyContainerName = 'props'
-    
-    // Clear the default property files and provide your own
-    propertyFiles = []
-    propertyFiles.add(file('C:/Users/blahblahblah/icecream.properties'))
-    propertyFiles.add(file('C:/Users/blahblahblah/sandwich.properties'))
-}
-```
-
-| Property | Type | Description |
-| --- | --- | --- |
-| propertyContainerName | String | The name of the property container you'd use in the gradle build to get the properties. Optional. Defaults to 'props'. |
-| propertyFiles | List&lt;File&gt; | The list of the configured external property files. Exposed so it can be manipulated if needed. Optional. |
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
