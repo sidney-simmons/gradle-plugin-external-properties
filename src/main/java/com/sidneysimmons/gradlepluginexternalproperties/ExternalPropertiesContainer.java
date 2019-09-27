@@ -82,6 +82,29 @@ public class ExternalPropertiesContainer {
     }
 
     /**
+     * Determine if a property value exists for the given property name.
+     * 
+     * @param propertyName the property name
+     * @return true if the property exists, false otherwise
+     */
+    public Boolean exists(String propertyName) {
+        // Validate the property name
+        propertyName = validatePropertyName(propertyName);
+
+        // Attempt to find the property
+        String property = null;
+        for (PropertyResolver resolver : getResolvers()) {
+            property = resolver.resolve(propertyName);
+            if (property != null) {
+                return Boolean.TRUE;
+            }
+        }
+
+        // Missing property!
+        return Boolean.FALSE;
+    }
+
+    /**
      * Get all the property resolvers. Uses defaults if the user doesn't specify any custom resolvers.
      * 
      * @return the list of property resolvers
