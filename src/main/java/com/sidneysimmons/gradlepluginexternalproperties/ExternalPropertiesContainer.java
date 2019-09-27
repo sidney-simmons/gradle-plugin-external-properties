@@ -58,6 +58,30 @@ public class ExternalPropertiesContainer {
     }
 
     /**
+     * Get the property value for the given property name. Returns the given default value if the property isn't found.
+     * 
+     * @param propertyName the property name
+     * @param defaultValue the default value
+     * @return the property value
+     */
+    public String get(String propertyName, String defaultValue) {
+        // Validate the property name
+        propertyName = validatePropertyName(propertyName);
+
+        // Attempt to find the property
+        String property = null;
+        for (PropertyResolver resolver : getResolvers()) {
+            property = resolver.resolve(propertyName);
+            if (property != null) {
+                return property;
+            }
+        }
+
+        // Missing property!
+        return defaultValue;
+    }
+
+    /**
      * Get all the property resolvers. Uses defaults if the user doesn't specify any custom resolvers.
      * 
      * @return the list of property resolvers

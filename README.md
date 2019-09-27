@@ -13,18 +13,19 @@ By default this plugin will load properties from the following files. Missing fi
 
 **Accessing the properties**
 
-```
+``` gradle
 tasks.register("printPropertyValue") {
+    // Get a property - throws an exception if the property cannot be resolved
     println props.get('some.property')
-    doLast {
-        println "My property: ${props.get('other.prop')}"
-    }
+    
+    // Get a property - returns a default value if the property cannot be resolved
+    println props.get('this.property.does.not.exist', 'This is a default value!')
 }
 ```
 
 ## Configuration
 
-```
+``` gradle
 externalProperties {
     resolver file('C:/Users/blahblahblah/icecream.properties')
     resolver file('C:/Users/blahblahblah/sandwich.properties')
@@ -50,7 +51,7 @@ showAllResolvers - Show all of the configured external property resolvers.
 
 Use the published plugin by setting the following in your project's build file.  You can find the latest version [here](https://plugins.gradle.org/plugin/com.sidneysimmons.gradle-plugin-external-properties).
 
-```
+``` gradle
 plugins {
     id 'com.sidneysimmons.gradle-plugin-external-properties' version '[LATEST VERSION]'
 }
@@ -61,7 +62,7 @@ Clone the repository and execute `gradlew build`.  Then execute `gradlew publish
 
 > build.gradle
 
-```
+``` gradle
 plugins {
     id 'com.sidneysimmons.gradle-plugin-external-properties' version '[PLUGIN VERSION]'
 }
@@ -69,7 +70,7 @@ plugins {
 
 > settings.gradle
 
-```
+``` gradle
 pluginManagement {
     repositories {
         maven {
