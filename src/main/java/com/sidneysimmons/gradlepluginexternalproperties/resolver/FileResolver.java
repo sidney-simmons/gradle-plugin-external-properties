@@ -8,6 +8,11 @@ import java.text.MessageFormat;
 import java.util.Properties;
 import org.gradle.api.Project;
 
+/**
+ * Resolver for {@link File} objects.
+ * 
+ * @author Sidney Simmons
+ */
 public class FileResolver implements PropertyResolver {
 
     private Project project;
@@ -38,7 +43,8 @@ public class FileResolver implements PropertyResolver {
                 properties.load(inputStream);
             } catch (IOException e) {
                 // This is a valid scenario so log it and continue gracefully
-                project.getLogger().info(MessageFormat.format("External properties file \"{0}\" not found. Continuing.", file));
+                project.getLogger()
+                        .info(MessageFormat.format("Cannot load external properties file. Continuing gracefully. file = {0}", file));
             }
         }
         return properties;

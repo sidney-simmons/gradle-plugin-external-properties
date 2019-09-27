@@ -1,65 +1,65 @@
 package com.sidneysimmons.gradlepluginexternalproperties.extension;
 
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.FileResolver;
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolver;
 import java.io.File;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.gradle.api.Project;
 import org.gradle.api.provider.ListProperty;
-import org.gradle.api.provider.Property;
 
 /**
- * Plugin extension for external properties related configuration.
+ * Plugin extension for configuring this plugin.
  * 
  * @author Sidney Simmons
  */
 public class ExternalPropertiesExtension {
 
     public static final String NAME = "externalProperties";
-
-    private Property<String> propertyContainerName;
-    private ListProperty<File> propertyFiles;
+    private Project project;
+    private ListProperty<PropertyResolver> resolvers;
 
     /**
-     * Constructor that sets a default container name and list of property files.
+     * Constructor.
      * 
      * @param project the project
      */
     public ExternalPropertiesExtension(Project project) {
-        // Default container name
-        propertyContainerName = project.getObjects().property(String.class);
-        propertyContainerName.set("props");
+        this.project = project;
 
-        // Default list of property files
-        propertyFiles = project.getObjects().listProperty(File.class);
-        propertyFiles.set(initializeDefaultPropertyFiles(project));
+        // Default the list of resolvers to an empty list
+        resolvers = project.getObjects().listProperty(PropertyResolver.class);
+        resolvers.set(new ArrayList<>());
     }
 
     /**
-     * Initialize a list of default property files. Currently contains the following files.
+     * Allows the user to add a {@link File} based resolver.
      * 
-     * <ol>
-     * <li>[USER_HOME]/.overrides/[PROJECT_NAME]/build.properties
-     * <li>[PROJECT_ROOT]/build.properties
-     * </ol>
-     * 
-     * @param project the project
-     * @return the list of default property files
+     * @param file the file
      */
-    private List<File> initializeDefaultPropertyFiles(Project project) {
-        List<File> defaultFiles = new ArrayList<>();
-        defaultFiles.add(
-                new File(MessageFormat.format("{0}/.overrides/{1}/build.properties", System.getProperty("user.home"), project.getName())));
-        defaultFiles.add(new File(MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath())));
-        return defaultFiles;
+    public void resolver(File file) {
+        appendResolver(new FileResolver(project, file));
     }
 
-    public Property<String> getPropertyContainerName() {
-        return propertyContainerName;
+    /**
+     * Get all the resolvers.
+     * 
+     * @return the list of resolvers
+     */
+    public ListProperty<PropertyResolver> getResolvers() {
+        return resolvers;
     }
 
-    public ListProperty<File> getPropertyFiles() {
-        return propertyFiles;
+    /**
+     * Appends the given resolver to the list of resolvers.
+     * 
+     * @param resolver the resolver to append
+     */
+    private void appendResolver(PropertyResolver resolver) {
+        List<PropertyResolver> existingResolvers = resolvers.get();
+        List<PropertyResolver> newResolvers = new ArrayList<>(existingResolvers);
+        newResolvers.add(resolver);
+        resolvers.set(newResolvers);
     }
 
 }
