@@ -20,6 +20,9 @@ tasks.register("printPropertyValue") {
     
     // Get a property - returns a default value if the property cannot be resolved
     println props.get('this.property.does.not.exist', 'This is a default value!')
+    
+    // See if a property exists - returns a boolean
+    println props.exists('another.property')
 }
 ```
 
