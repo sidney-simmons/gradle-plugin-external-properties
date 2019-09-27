@@ -1,7 +1,7 @@
 package com.sidneysimmons.gradlepluginexternalproperties.exception;
 
 /**
- * Exception for when a property is invalid.
+ * Exception for when a requested property name is invalid.
  * 
  * @author Sidney Simmons
  */

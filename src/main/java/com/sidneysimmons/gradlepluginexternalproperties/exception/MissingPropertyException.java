@@ -1,7 +1,7 @@
 package com.sidneysimmons.gradlepluginexternalproperties.exception;
 
 /**
- * Exception for when a property is missing.
+ * Exception for when a property cannot be found.
  * 
  * @author Sidney Simmons
  */
