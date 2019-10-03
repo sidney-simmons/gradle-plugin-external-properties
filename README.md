@@ -1,10 +1,10 @@
 # gradle-plugin-external-properties
 
-gradle-plugin-external-properties is a custom gradle plugin for easily configuring external properties in your gradle build.
+gradle-plugin-external-properties is a custom gradle plugin for configuring external properties in your gradle build.
 
 ## Usage
 
-By default this plugin will load properties from the following files. Missing files will be ignored so don't feel like they must both exist.  Note that the default property files will be ignored if you decide to supply your own via the configuration (see below).  Also note that files toward the beginning of the list take precedence over files toward the end of the list.
+By default this plugin will load properties from the following files. Missing files will be ignored so don't feel like they must both exist.  Note that the default property files will be ignored if you decide to supply your own via the configuration (see below).  Also note that files toward the beginning of the list take precedence over files toward the end of the list and files in child projects take precedence over files in parent projects.
 
 **Default property files**
 
@@ -38,15 +38,6 @@ externalProperties {
 | Property | Type | Description |
 | --- | --- | --- |
 | resolver | File | An external property file to load. Optional. If not set the defaults above will be used. |
-
-## Gradle Tasks
-
-```
-External Properties tasks
--------------------------
-showAllProperties - Show all of the configured external properties.
-showAllResolvers - Show all of the configured external property resolvers.
-```
 
 ## Applying the Plugin
 
