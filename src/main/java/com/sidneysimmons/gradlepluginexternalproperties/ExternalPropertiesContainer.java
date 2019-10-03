@@ -35,46 +35,37 @@ public class ExternalPropertiesContainer {
     }
 
     /**
-     * Get the property value for the given property name. Throws a runtime exception if the property isn't found.
+     * Get the property value for the given property name. Throws a runtime exception if the property
+     * isn't found.
      * 
      * @param propertyName the property name
      * @return the property value
      */
     public String get(String propertyName) {
-        // Validate the property name
-        propertyName = validatePropertyName(propertyName);
-
-        // Attempt to find the property
-        String property = null;
-        for (PropertyResolver resolver : getResolvers()) {
-            property = resolver.resolve(propertyName);
-            if (property != null) {
-                return property;
-            }
+        // Find the property
+        String propertyValue = findPropertyValue(propertyName);
+        if (propertyValue != null) {
+            return propertyValue;
         }
 
         // Missing property!
-        throw new MissingPropertyException(MessageFormat.format("External property not found. propertyName = {0}", propertyName));
+        throw new MissingPropertyException(
+                MessageFormat.format("External property not found. propertyName = {0}", propertyName));
     }
 
     /**
-     * Get the property value for the given property name. Returns the given default value if the property isn't found.
+     * Get the property value for the given property name. Returns the given default value if the
+     * property isn't found.
      * 
      * @param propertyName the property name
      * @param defaultValue the default value
      * @return the property value
      */
     public String get(String propertyName, String defaultValue) {
-        // Validate the property name
-        propertyName = validatePropertyName(propertyName);
-
-        // Attempt to find the property
-        String property = null;
-        for (PropertyResolver resolver : getResolvers()) {
-            property = resolver.resolve(propertyName);
-            if (property != null) {
-                return property;
-            }
+        // Find the property
+        String propertyValue = findPropertyValue(propertyName);
+        if (propertyValue != null) {
+            return propertyValue;
         }
 
         // Missing property!
@@ -88,16 +79,10 @@ public class ExternalPropertiesContainer {
      * @return true if the property exists, false otherwise
      */
     public Boolean exists(String propertyName) {
-        // Validate the property name
-        propertyName = validatePropertyName(propertyName);
-
-        // Attempt to find the property
-        String property = null;
-        for (PropertyResolver resolver : getResolvers()) {
-            property = resolver.resolve(propertyName);
-            if (property != null) {
-                return Boolean.TRUE;
-            }
+        // Find the property
+        String propertyValue = findPropertyValue(propertyName);
+        if (propertyValue != null) {
+            return Boolean.TRUE;
         }
 
         // Missing property!
@@ -105,7 +90,58 @@ public class ExternalPropertiesContainer {
     }
 
     /**
-     * Get all the property resolvers. Uses defaults if the user doesn't specify any custom resolvers.
+     * Find the property value for the given property name. First looks in this project's resolvers.
+     * Moves to the parent project's resolvers if not found. Continues up through the root project.
+     * 
+     * @param propertyName the property name
+     * @return the property value if found, null otherwise
+     */
+    private String findPropertyValue(String propertyName) {
+        // Validate the property name
+        propertyName = validatePropertyName(propertyName);
+
+        // Attempt to find the property using this project's resolvers, the parent's resolvers, that
+        // parent's resolvers, etc
+        Project tempProject = project;
+        while (tempProject != null) {
+            ExternalPropertiesContainer tempContainer = (ExternalPropertiesContainer) tempProject.getExtensions()
+                    .findByName(NAME);
+            if (tempContainer != null) {
+                String property = null;
+                for (PropertyResolver resolver : tempContainer.getResolvers()) {
+                    property = resolver.resolve(propertyName);
+                    if (property != null) {
+                        return property;
+                    }
+                }
+            }
+
+            // Move on to the parent project (should return null when we've already reached the root project)
+            tempProject = project.getParent();
+        }
+
+        // Cannot find the property
+        return null;
+    }
+
+    /**
+     * Validate a property name. Throws a runtime exception if the name is invalid.
+     * 
+     * @param propertyName the property name
+     * @return the property name
+     */
+    private String validatePropertyName(String propertyName) {
+        propertyName = propertyName != null ? propertyName.trim() : null;
+        if (propertyName == null || propertyName.isEmpty()) {
+            throw new InvalidPropertyException(
+                    MessageFormat.format("External property name is invalid. propertyName = {0}", propertyName));
+        }
+        return propertyName;
+    }
+
+    /**
+     * Get all the property resolvers for this project. Does not include parent projects. Uses defaults
+     * if the user doesn't specify any custom resolvers.
      * 
      * @return the list of property resolvers
      */
@@ -139,25 +175,13 @@ public class ExternalPropertiesContainer {
             defaultResolvers.add(userDirectoryResolver);
 
             // 2) Build the project directory file resolver
-            String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
-            PropertyResolver projectDirectoryResolver = new FileResolver(project, new File(projectDirectoryResolverString));
+            String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties",
+                    project.getProjectDir().getAbsolutePath());
+            PropertyResolver projectDirectoryResolver = new FileResolver(project,
+                    new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);
         }
         return defaultResolvers;
-    }
-
-    /**
-     * Validate a property name. Throws a runtime exception if the name is invalid.
-     * 
-     * @param propertyName the property name
-     * @return the property name
-     */
-    private String validatePropertyName(String propertyName) {
-        propertyName = propertyName != null ? propertyName.trim() : null;
-        if (propertyName == null || propertyName.isEmpty()) {
-            throw new InvalidPropertyException(MessageFormat.format("External property name is invalid. propertyName = {0}", propertyName));
-        }
-        return propertyName;
     }
 
 }
