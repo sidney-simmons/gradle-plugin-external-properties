@@ -1,11 +1,11 @@
 plugins {
-    id "com.gradle.plugin-publish" version '0.10.1'
-    id 'java-gradle-plugin'
-    id 'maven-publish'
+    id "com.gradle.plugin-publish" version "0.10.1"
+    id "java-gradle-plugin"
+    id "maven-publish"
 }
 
-group = 'com.sidneysimmons'
-version = '0.0.4'
+group = "com.sidneysimmons"
+version = "0.0.4"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -17,26 +17,26 @@ repositories {
 publishing {
     repositories {
         maven {
-            url './build/test-maven-repo'
+            url "./build/test-maven-repo"
         }
     }
 }
 
 // Gradle Plugin Portal bundle details
 pluginBundle {
-    website = 'https://github.com/sidney-simmons/gradle-plugin-external-properties'
-    vcsUrl = 'https://github.com/sidney-simmons/gradle-plugin-external-properties'
-    tags = ['properties', 'external properties']
+    website = "https://github.com/sidney-simmons/gradle-plugin-external-properties"
+    vcsUrl = "https://github.com/sidney-simmons/gradle-plugin-external-properties"
+    tags = ["properties", "external properties"]
 }
 
 // Gradle Plugin Portal plugin details
 gradlePlugin {
     plugins {
         dockerPlugin {
-            id = 'com.sidneysimmons.gradle-plugin-external-properties'
-            displayName = 'External Properties Plugin' 
-            description = 'gradle-plugin-external-properties is a custom gradle plugin for loading external properties into your gradle build.' 
-            implementationClass = 'com.sidneysimmons.gradlepluginexternalproperties.ExternalPropertiesPlugin'
+            id = "com.sidneysimmons.gradle-plugin-external-properties"
+            displayName = "External Properties Plugin" 
+            description = "gradle-plugin-external-properties is a custom gradle plugin for loading external properties into your gradle build." 
+            implementationClass = "com.sidneysimmons.gradlepluginexternalproperties.ExternalPropertiesPlugin"
         }
     }
 }
