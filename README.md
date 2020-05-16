@@ -4,11 +4,12 @@ gradle-plugin-external-properties is a custom gradle plugin for configuring exte
 
 ## Usage
 
-By default this plugin will load properties from the following files. Missing files will be ignored so don't feel like they must both exist.  Note that the default property files will be ignored if you decide to supply your own via the configuration (see below).  Also note that files toward the beginning of the list take precedence over files toward the end of the list and files in child projects take precedence over files in parent projects.
+By default this plugin will resolve properties from the following files. Missing files will be ignored so it isn't required that they exist.  Resolvers toward the beginning of the list take precedence over resolvers toward the end of the list and resolvers in child projects take precedence over resolvers in parent projects.
 
-**Default property files**
+**Default property resolvers**
 
-- `[USER HOME]/.overrides/[PROJECT NAME]/build.properties`
+- `[USER HOME]/.gradle-plugin-external-properties/[PROJECT NAME]/build.properties`
+- `[USER HOME]/.overrides/[PROJECT NAME]/build.properties` <- DEPRECATED and will be removed!
 - `[PROJECT ROOT]/build.properties`
 
 **Accessing the properties**
@@ -26,7 +27,20 @@ tasks.register("printPropertyValue") {
 }
 ```
 
-## Configuration
+** Multi-project example
+
+Let's say you have a gradle project called "beer" and it has a subproject called "ipa".  Here is the order the default property resolvers will be queried.
+
+- `[USER HOME]/.gradle-plugin-external-properties/beer/ipa/build.properties`
+- `beer/ipa/build.properties`
+- `[USER HOME]/.gradle-plugin-external-properties/beer/build.properties`
+- `beer/build.properties`
+
+## Custom Configuration
+
+You can define your own property resolvers using the configuration below if the defaults aren't sufficient for your project.  Similar to the default resolvers above resolvers toward the beginning of the list take precedence over resolvers toward the end of the list and resolvers in child projects take precedence over resolvers in parent projects.
+
+Note that the default property resolvers will be ignored if you decide to supply your own via the configuration.
 
 ``` gradle
 externalProperties {
@@ -37,7 +51,7 @@ externalProperties {
 
 | Property | Type | Description |
 | --- | --- | --- |
-| resolver | File | An external property file to load. Optional. If not set the defaults above will be used. |
+| resolver | File | An external property file to load. Optional. If none are set the defaults above will be used. |
 
 ## Applying the Plugin
 
