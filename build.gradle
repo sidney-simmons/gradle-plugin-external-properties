@@ -26,7 +26,7 @@ publishing {
 pluginBundle {
     website = "https://github.com/sidney-simmons/gradle-plugin-external-properties"
     vcsUrl = "https://github.com/sidney-simmons/gradle-plugin-external-properties"
-    tags = ["properties", "external properties"]
+    tags = ["properties", "property", "external", "externalized", "external properties", "externalized properties"]
 }
 
 // Gradle Plugin Portal plugin details
