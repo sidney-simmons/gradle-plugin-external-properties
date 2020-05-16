@@ -27,14 +27,14 @@ tasks.register("printPropertyValue") {
 }
 ```
 
-** Multi-project example
+**Multi-project example**
 
 Let's say you have a gradle project called "beer" and it has a subproject called "ipa".  Here is the order the default property resolvers will be queried.
 
 - `[USER HOME]/.gradle-plugin-external-properties/beer/ipa/build.properties`
-- `beer/ipa/build.properties`
+- `[PROJECT ROOT]/ipa/build.properties`
 - `[USER HOME]/.gradle-plugin-external-properties/beer/build.properties`
-- `beer/build.properties`
+- `[PROJECT ROOT]/build.properties`
 
 ## Custom Configuration
 
