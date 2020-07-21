@@ -99,28 +99,33 @@ public class ExternalPropertiesContainer {
     private String findPropertyValue(String propertyName) {
         // Validate the property name
         propertyName = validatePropertyName(propertyName);
+        project.getLogger().debug("Trying to find value for external property \"" + propertyName + "\"...");
 
         // Attempt to find the property using this project's resolvers, the parent's resolvers, that
         // parent's resolvers, etc
         Project tempProject = project;
         while (tempProject != null) {
-            ExternalPropertiesContainer tempContainer = (ExternalPropertiesContainer) tempProject.getExtensions()
-                    .findByName(NAME);
+            project.getLogger().debug("Looking in project " + tempProject + "...");
+            ExternalPropertiesContainer tempContainer = (ExternalPropertiesContainer) tempProject.getExtensions().findByName(NAME);
             if (tempContainer != null) {
+                project.getLogger().debug("Property container found - looking at resolvers...");
                 String property = null;
                 for (PropertyResolver resolver : tempContainer.getResolvers()) {
+                    project.getLogger().debug("Looking in resolver " + resolver + "...");
                     property = resolver.resolve(propertyName);
                     if (property != null) {
+                        project.getLogger().debug("Property found.");
                         return property;
                     }
                 }
             }
 
             // Move on to the parent project (should return null when we've already reached the root project)
-            tempProject = project.getParent();
+            tempProject = tempProject.getParent();
         }
 
         // Cannot find the property
+        project.getLogger().debug("Property not found.");
         return null;
     }
 
