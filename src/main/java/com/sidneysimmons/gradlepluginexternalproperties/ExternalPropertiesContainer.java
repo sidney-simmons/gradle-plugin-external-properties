@@ -49,8 +49,7 @@ public class ExternalPropertiesContainer {
         }
 
         // Missing property!
-        throw new MissingPropertyException(
-                MessageFormat.format("External property not found. propertyName = {0}", propertyName));
+        throw new MissingPropertyException(MessageFormat.format("External property not found. propertyName = {0}", propertyName));
     }
 
     /**
@@ -138,8 +137,7 @@ public class ExternalPropertiesContainer {
     private String validatePropertyName(String propertyName) {
         propertyName = propertyName != null ? propertyName.trim() : null;
         if (propertyName == null || propertyName.isEmpty()) {
-            throw new InvalidPropertyException(
-                    MessageFormat.format("External property name is invalid. propertyName = {0}", propertyName));
+            throw new InvalidPropertyException(MessageFormat.format("External property name is invalid. propertyName = {0}", propertyName));
         }
         return propertyName;
     }
@@ -177,25 +175,20 @@ public class ExternalPropertiesContainer {
             // 1) Build the user directory file resolver
             String userHomeDirectory = System.getProperty("user.home");
             String projectNameHierarchy = buildProjectNameHierarchy();
-            String userDirectoryResolverString = MessageFormat.format(
-                    "{0}/.gradle-plugin-external-properties/{1}/build.properties", userHomeDirectory,
+            String userDirectoryResolverString = MessageFormat.format("{0}/.gradle-plugin-external-properties/{1}/build.properties", userHomeDirectory,
                     projectNameHierarchy);
             PropertyResolver userDirectoryResolver = new FileResolver(project, new File(userDirectoryResolverString));
             defaultResolvers.add(userDirectoryResolver);
 
             // 2) Build the user directory file resolver (DEPRECATED)
             // TODO - remove this in the next release!
-            String deprecatedDirectoryResolverString = MessageFormat.format("{0}/.overrides/{1}/build.properties",
-                    userHomeDirectory, projectNameHierarchy);
-            PropertyResolver deprecatedUserDirectoryResolver = new FileResolver(project,
-                    new File(deprecatedDirectoryResolverString));
+            String deprecatedDirectoryResolverString = MessageFormat.format("{0}/.overrides/{1}/build.properties", userHomeDirectory, projectNameHierarchy);
+            PropertyResolver deprecatedUserDirectoryResolver = new FileResolver(project, new File(deprecatedDirectoryResolverString));
             defaultResolvers.add(deprecatedUserDirectoryResolver);
 
             // 3) Build the project directory file resolver
-            String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties",
-                    project.getProjectDir().getAbsolutePath());
-            PropertyResolver projectDirectoryResolver = new FileResolver(project,
-                    new File(projectDirectoryResolverString));
+            String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
+            PropertyResolver projectDirectoryResolver = new FileResolver(project, new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);
         }
         return defaultResolvers;
