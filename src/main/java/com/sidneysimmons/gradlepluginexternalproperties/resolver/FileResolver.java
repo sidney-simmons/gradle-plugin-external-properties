@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Resolver for {@link File} objects.
- * 
- * @author Sidney Simmons
  */
 public class FileResolver implements PropertyResolver {
 

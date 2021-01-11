@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Container that allows the user access to the properties.
- * 
- * @author Sidney Simmons
  */
 public class ExternalPropertiesContainer {
 

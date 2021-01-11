@@ -4,8 +4,6 @@ import java.util.Properties;
 
 /**
  * Interface for all property resolvers.
- * 
- * @author Sidney Simmons
  */
 public interface PropertyResolver {
 
