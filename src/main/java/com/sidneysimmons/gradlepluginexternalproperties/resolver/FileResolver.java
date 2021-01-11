@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Properties;
 import org.gradle.api.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Resolver for {@link File} objects.
@@ -14,6 +16,8 @@ import org.gradle.api.Project;
  * @author Sidney Simmons
  */
 public class FileResolver implements PropertyResolver {
+
+    private static final Logger log = LoggerFactory.getLogger(FileResolver.class);
 
     private Project project;
     private File file;
@@ -43,8 +47,7 @@ public class FileResolver implements PropertyResolver {
                 properties.load(inputStream);
             } catch (IOException e) {
                 // This is a valid scenario so log it and continue gracefully
-                project.getLogger()
-                        .info(MessageFormat.format("Cannot load external properties file. Continuing gracefully. file = {0}", file));
+                log.debug(MessageFormat.format("Cannot load external properties file. Continuing gracefully. file = {0}", file));
             }
         }
         return properties;

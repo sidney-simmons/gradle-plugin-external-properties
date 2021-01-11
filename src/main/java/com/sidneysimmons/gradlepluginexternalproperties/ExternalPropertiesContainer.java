@@ -10,6 +10,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.gradle.api.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Container that allows the user access to the properties.
@@ -17,6 +19,8 @@ import org.gradle.api.Project;
  * @author Sidney Simmons
  */
 public class ExternalPropertiesContainer {
+
+    private static final Logger log = LoggerFactory.getLogger(ExternalPropertiesContainer.class);
 
     public static final String NAME = "props";
     private Project project;
@@ -98,22 +102,22 @@ public class ExternalPropertiesContainer {
     private String findPropertyValue(String propertyName) {
         // Validate the property name
         propertyName = validatePropertyName(propertyName);
-        project.getLogger().debug("Trying to find value for external property \"" + propertyName + "\"...");
+        log.debug("Trying to find value for external property \"" + propertyName + "\"...");
 
         // Attempt to find the property using this project's resolvers, the parent's resolvers, that
         // parent's resolvers, etc
         Project tempProject = project;
         while (tempProject != null) {
-            project.getLogger().debug("Looking in project " + tempProject + "...");
+            log.debug("Looking in project " + tempProject + "...");
             ExternalPropertiesContainer tempContainer = (ExternalPropertiesContainer) tempProject.getExtensions().findByName(NAME);
             if (tempContainer != null) {
-                project.getLogger().debug("Property container found - looking at resolvers...");
+                log.debug("Property container found - looking at resolvers...");
                 String property = null;
                 for (PropertyResolver resolver : tempContainer.getResolvers()) {
-                    project.getLogger().debug("Looking in resolver " + resolver + "...");
+                    log.debug("Looking in resolver " + resolver + "...");
                     property = resolver.resolve(propertyName);
                     if (property != null) {
-                        project.getLogger().debug("Property found.");
+                        log.debug("Property found.");
                         return property;
                     }
                 }
@@ -124,7 +128,7 @@ public class ExternalPropertiesContainer {
         }
 
         // Cannot find the property
-        project.getLogger().debug("Property not found.");
+        log.debug("Property not found.");
         return null;
     }
 
