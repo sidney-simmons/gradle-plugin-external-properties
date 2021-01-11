@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Resolver for {@link File} objects.
+ * Resolver for {@link File} objects formatted as ".properties" files.
  */
-public class FileResolver implements PropertyResolver {
+public class PropertiesFileResolver implements PropertyResolver {
 
-    private static final Logger log = LoggerFactory.getLogger(FileResolver.class);
+    private static final Logger log = LoggerFactory.getLogger(PropertiesFileResolver.class);
 
     private Project project;
     private File file;
@@ -27,7 +27,7 @@ public class FileResolver implements PropertyResolver {
      * @param project the project
      * @param file the properties file
      */
-    public FileResolver(Project project, File file) {
+    public PropertiesFileResolver(Project project, File file) {
         this.project = project;
         this.file = file;
     }
