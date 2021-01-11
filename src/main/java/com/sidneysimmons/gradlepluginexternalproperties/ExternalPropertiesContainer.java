@@ -3,7 +3,7 @@ package com.sidneysimmons.gradlepluginexternalproperties;
 import com.sidneysimmons.gradlepluginexternalproperties.exception.InvalidPropertyException;
 import com.sidneysimmons.gradlepluginexternalproperties.exception.MissingPropertyException;
 import com.sidneysimmons.gradlepluginexternalproperties.extension.ExternalPropertiesExtension;
-import com.sidneysimmons.gradlepluginexternalproperties.resolver.FileResolver;
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertiesFileResolver;
 import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolver;
 import java.io.File;
 import java.text.MessageFormat;
@@ -178,12 +178,12 @@ public class ExternalPropertiesContainer {
             String projectNameHierarchy = buildProjectNameHierarchy();
             String userDirectoryResolverString = MessageFormat.format("{0}/.gradle-plugin-external-properties/{1}/build.properties", userHomeDirectory,
                     projectNameHierarchy);
-            PropertyResolver userDirectoryResolver = new FileResolver(project, new File(userDirectoryResolverString));
+            PropertyResolver userDirectoryResolver = new PropertiesFileResolver(project, new File(userDirectoryResolverString));
             defaultResolvers.add(userDirectoryResolver);
 
             // 2) Build the project directory file resolver
             String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
-            PropertyResolver projectDirectoryResolver = new FileResolver(project, new File(projectDirectoryResolverString));
+            PropertyResolver projectDirectoryResolver = new PropertiesFileResolver(project, new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);
         }
         return defaultResolvers;

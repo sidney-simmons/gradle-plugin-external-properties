@@ -1,6 +1,6 @@
 package com.sidneysimmons.gradlepluginexternalproperties.extension;
 
-import com.sidneysimmons.gradlepluginexternalproperties.resolver.FileResolver;
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertiesFileResolver;
 import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolver;
 import java.io.File;
 import java.util.ArrayList;
@@ -31,12 +31,22 @@ public class ExternalPropertiesExtension {
     }
 
     /**
-     * Allows the user to add a {@link File} based resolver.
+     * Allows the user to add a {@link PropertiesFileResolver} based resolver.
      * 
      * @param file the file
      */
-    public void resolver(File file) {
-        appendResolver(new FileResolver(project, file));
+    public void propertiesFileResolver(File file) {
+        appendResolver(new PropertiesFileResolver(project, file));
+    }
+
+    /**
+     * Allows the user to add any custom property resolver that implements the {@link PropertyResolver}
+     * interface.
+     * 
+     * @param resolver the resolver
+     */
+    public void resolver(PropertyResolver resolver) {
+        appendResolver(resolver);
     }
 
     /**

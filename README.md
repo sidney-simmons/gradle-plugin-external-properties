@@ -43,8 +43,8 @@ Note that the default property resolvers will be ignored if you decide to supply
 
 ``` gradle
 externalProperties {
-    resolver file("C:/Users/blahblahblah/icecream.properties")
-    resolver file("C:/Users/blahblahblah/sandwich.properties")
+    propertiesFileResolver file("C:/Users/blahblahblah/icecream.properties")
+    propertiesFileResolver file("C:/Users/blahblahblah/sandwich.properties")
 }
 ```
 
