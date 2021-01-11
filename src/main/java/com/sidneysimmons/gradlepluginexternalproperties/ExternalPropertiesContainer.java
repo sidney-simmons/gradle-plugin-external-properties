@@ -162,7 +162,6 @@ public class ExternalPropertiesContainer {
      * 
      * <ol>
      * <li>{@code [USER HOME]/.gradle-plugin-external-properties/[PROJECT NAME]/[SUBPROJECT NAME]/build.properties}</li>
-     * <li>{@code [USER HOME]/.overrides/[PROJECT NAME]/[SUBPROJECT NAME]/build.properties}</li>
      * <li>{@code [PROJECT ROOT]/build.properties}</li>
      * </ol>
      * 
@@ -180,13 +179,7 @@ public class ExternalPropertiesContainer {
             PropertyResolver userDirectoryResolver = new FileResolver(project, new File(userDirectoryResolverString));
             defaultResolvers.add(userDirectoryResolver);
 
-            // 2) Build the user directory file resolver (DEPRECATED)
-            // TODO - remove this in the next release!
-            String deprecatedDirectoryResolverString = MessageFormat.format("{0}/.overrides/{1}/build.properties", userHomeDirectory, projectNameHierarchy);
-            PropertyResolver deprecatedUserDirectoryResolver = new FileResolver(project, new File(deprecatedDirectoryResolverString));
-            defaultResolvers.add(deprecatedUserDirectoryResolver);
-
-            // 3) Build the project directory file resolver
+            // 2) Build the project directory file resolver
             String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
             PropertyResolver projectDirectoryResolver = new FileResolver(project, new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);

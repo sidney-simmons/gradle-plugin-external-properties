@@ -9,7 +9,6 @@ By default this plugin will resolve properties from the following files. Missing
 **Default property resolvers**
 
 - `[USER HOME]/.gradle-plugin-external-properties/[PROJECT NAME]/build.properties`
-- `[USER HOME]/.overrides/[PROJECT NAME]/build.properties` <- DEPRECATED and will be removed!
 - `[PROJECT ROOT]/build.properties`
 
 **Accessing the properties**
