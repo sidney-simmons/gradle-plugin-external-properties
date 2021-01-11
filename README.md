@@ -63,17 +63,5 @@ plugins {
 }
 ```
 
-## Publishing the Plugin
-
-1. Increment the "version" within build.gradle.
-
-2. Run the following to publish.
-
-```
-./gradlew -Dgradle.publish.key=${PUBLISH_KEY} -Dgradle.publish.secret=${PUBLISH_SECRET} publishPlugins
-```
-
-3. Add a new release to the GitHub releases.
-
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
