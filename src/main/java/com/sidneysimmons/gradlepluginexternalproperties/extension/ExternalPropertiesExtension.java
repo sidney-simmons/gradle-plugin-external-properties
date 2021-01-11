@@ -10,8 +10,6 @@ import org.gradle.api.provider.ListProperty;
 
 /**
  * Plugin extension for configuring this plugin.
- * 
- * @author Sidney Simmons
  */
 public class ExternalPropertiesExtension {
 

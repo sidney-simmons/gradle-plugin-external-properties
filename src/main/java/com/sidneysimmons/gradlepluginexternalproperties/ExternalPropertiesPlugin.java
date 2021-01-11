@@ -6,8 +6,6 @@ import org.gradle.api.Project;
 
 /**
  * Custom plugin for working with external properties.
- * 
- * @author Sidney Simmons
  */
 public class ExternalPropertiesPlugin implements Plugin<Project> {
 
