@@ -82,16 +82,16 @@ This plugin logs several pieces of troubleshooting information at the DEBUG leve
 
 The latest release is unit tested against the following gradle versions (see [gradle-plugin-external-properties-tests](https://github.com/sidney-simmons/gradle-plugin-external-properties-tests)):
 
-* 6.3
-* 6.4
-* 6.4.1
-* 6.5
-* 6.5.1
-* 6.6
-* 6.6.1
-* 6.7
-* 6.7.1
 * 6.8
+* 6.7.1
+* 6.7
+* 6.6.1
+* 6.6
+* 6.5.1
+* 6.5
+* 6.4.1
+* 6.4
+* 6.3
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
