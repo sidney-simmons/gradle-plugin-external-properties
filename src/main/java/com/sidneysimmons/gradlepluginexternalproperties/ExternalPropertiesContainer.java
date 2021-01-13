@@ -3,20 +3,22 @@ package com.sidneysimmons.gradlepluginexternalproperties;
 import com.sidneysimmons.gradlepluginexternalproperties.exception.InvalidPropertyException;
 import com.sidneysimmons.gradlepluginexternalproperties.exception.MissingPropertyException;
 import com.sidneysimmons.gradlepluginexternalproperties.extension.ExternalPropertiesExtension;
-import com.sidneysimmons.gradlepluginexternalproperties.resolver.FileResolver;
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertiesFileResolver;
 import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolver;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.gradle.api.Project;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Container that allows the user access to the properties.
- * 
- * @author Sidney Simmons
  */
 public class ExternalPropertiesContainer {
+
+    private static final Logger log = LoggerFactory.getLogger(ExternalPropertiesContainer.class);
 
     public static final String NAME = "props";
     private Project project;
@@ -98,22 +100,22 @@ public class ExternalPropertiesContainer {
     private String findPropertyValue(String propertyName) {
         // Validate the property name
         propertyName = validatePropertyName(propertyName);
-        project.getLogger().debug("Trying to find value for external property \"" + propertyName + "\"...");
+        log.debug("Trying to find value for external property \"" + propertyName + "\"...");
 
         // Attempt to find the property using this project's resolvers, the parent's resolvers, that
         // parent's resolvers, etc
         Project tempProject = project;
         while (tempProject != null) {
-            project.getLogger().debug("Looking in project " + tempProject + "...");
+            log.debug("Looking in project " + tempProject + "...");
             ExternalPropertiesContainer tempContainer = (ExternalPropertiesContainer) tempProject.getExtensions().findByName(NAME);
             if (tempContainer != null) {
-                project.getLogger().debug("Property container found - looking at resolvers...");
+                log.debug("Property container found - looking at resolvers...");
                 String property = null;
                 for (PropertyResolver resolver : tempContainer.getResolvers()) {
-                    project.getLogger().debug("Looking in resolver " + resolver + "...");
+                    log.debug("Looking in resolver " + resolver + "...");
                     property = resolver.resolve(propertyName);
                     if (property != null) {
-                        project.getLogger().debug("Property found.");
+                        log.debug("Property found.");
                         return property;
                     }
                 }
@@ -124,7 +126,7 @@ public class ExternalPropertiesContainer {
         }
 
         // Cannot find the property
-        project.getLogger().debug("Property not found.");
+        log.debug("Property not found.");
         return null;
     }
 
@@ -162,7 +164,6 @@ public class ExternalPropertiesContainer {
      * 
      * <ol>
      * <li>{@code [USER HOME]/.gradle-plugin-external-properties/[PROJECT NAME]/[SUBPROJECT NAME]/build.properties}</li>
-     * <li>{@code [USER HOME]/.overrides/[PROJECT NAME]/[SUBPROJECT NAME]/build.properties}</li>
      * <li>{@code [PROJECT ROOT]/build.properties}</li>
      * </ol>
      * 
@@ -171,24 +172,19 @@ public class ExternalPropertiesContainer {
     public List<PropertyResolver> getDefaultResolvers() {
         if (defaultResolvers == null) {
             defaultResolvers = new ArrayList<>();
+            log.debug("Configuring plugin provided default property resolvers for project " + project + ".");
 
             // 1) Build the user directory file resolver
             String userHomeDirectory = System.getProperty("user.home");
             String projectNameHierarchy = buildProjectNameHierarchy();
             String userDirectoryResolverString = MessageFormat.format("{0}/.gradle-plugin-external-properties/{1}/build.properties", userHomeDirectory,
                     projectNameHierarchy);
-            PropertyResolver userDirectoryResolver = new FileResolver(project, new File(userDirectoryResolverString));
+            PropertyResolver userDirectoryResolver = new PropertiesFileResolver(new File(userDirectoryResolverString));
             defaultResolvers.add(userDirectoryResolver);
 
-            // 2) Build the user directory file resolver (DEPRECATED)
-            // TODO - remove this in the next release!
-            String deprecatedDirectoryResolverString = MessageFormat.format("{0}/.overrides/{1}/build.properties", userHomeDirectory, projectNameHierarchy);
-            PropertyResolver deprecatedUserDirectoryResolver = new FileResolver(project, new File(deprecatedDirectoryResolverString));
-            defaultResolvers.add(deprecatedUserDirectoryResolver);
-
-            // 3) Build the project directory file resolver
+            // 2) Build the project directory file resolver
             String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
-            PropertyResolver projectDirectoryResolver = new FileResolver(project, new File(projectDirectoryResolverString));
+            PropertyResolver projectDirectoryResolver = new PropertiesFileResolver(new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);
         }
         return defaultResolvers;

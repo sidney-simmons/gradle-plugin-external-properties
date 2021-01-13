@@ -2,8 +2,6 @@ package com.sidneysimmons.gradlepluginexternalproperties.exception;
 
 /**
  * Exception for when a requested property name is invalid.
- * 
- * @author Sidney Simmons
  */
 public class InvalidPropertyException extends RuntimeException {
 

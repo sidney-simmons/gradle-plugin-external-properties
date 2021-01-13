@@ -1,19 +1,21 @@
 package com.sidneysimmons.gradlepluginexternalproperties.extension;
 
-import com.sidneysimmons.gradlepluginexternalproperties.resolver.FileResolver;
+import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertiesFileResolver;
 import com.sidneysimmons.gradlepluginexternalproperties.resolver.PropertyResolver;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.gradle.api.Project;
 import org.gradle.api.provider.ListProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Plugin extension for configuring this plugin.
- * 
- * @author Sidney Simmons
  */
 public class ExternalPropertiesExtension {
+
+    private static final Logger log = LoggerFactory.getLogger(ExternalPropertiesExtension.class);
 
     public static final String NAME = "externalProperties";
     private Project project;
@@ -33,12 +35,22 @@ public class ExternalPropertiesExtension {
     }
 
     /**
-     * Allows the user to add a {@link File} based resolver.
+     * Allows the user to add a {@link PropertiesFileResolver} based resolver.
      * 
      * @param file the file
      */
-    public void resolver(File file) {
-        appendResolver(new FileResolver(project, file));
+    public void propertiesFileResolver(File file) {
+        appendResolver(new PropertiesFileResolver(file));
+    }
+
+    /**
+     * Allows the user to add any custom property resolver that implements the {@link PropertyResolver}
+     * interface.
+     * 
+     * @param resolver the resolver
+     */
+    public void resolver(PropertyResolver resolver) {
+        appendResolver(resolver);
     }
 
     /**
@@ -60,6 +72,7 @@ public class ExternalPropertiesExtension {
         List<PropertyResolver> newResolvers = new ArrayList<>(existingResolvers);
         newResolvers.add(resolver);
         resolvers.set(newResolvers);
+        log.debug("Appended property resolver " + resolver + " as resolver #" + newResolvers.size() + " for project " + project + ".");
     }
 
 }

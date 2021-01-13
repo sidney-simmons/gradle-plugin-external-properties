@@ -2,8 +2,6 @@ package com.sidneysimmons.gradlepluginexternalproperties.exception;
 
 /**
  * Exception for when a property cannot be found.
- * 
- * @author Sidney Simmons
  */
 public class MissingPropertyException extends RuntimeException {
 

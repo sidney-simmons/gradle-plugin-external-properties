@@ -1,25 +1,15 @@
 plugins {
-    id "com.gradle.plugin-publish" version "0.11.0"
+    id "com.gradle.plugin-publish" version "0.12.0"
     id "java-gradle-plugin"
-    id "maven-publish"
 }
 
 group = "com.sidneysimmons"
-version = "1.0.1"
+version = "2.0.0"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     jcenter()
-}
-
-// Local maven repository publishing (for testing)
-publishing {
-    repositories {
-        maven {
-            url "./build/test-maven-repo"
-        }
-    }
 }
 
 // Gradle Plugin Portal bundle details
