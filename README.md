@@ -78,5 +78,20 @@ externalProperties {
 
 This plugin logs several pieces of troubleshooting information at the DEBUG level.  Enable logging through gradle with the "--debug" command (or any other similar approach) and look for logs coming from classes in the `com.sidneysimmons.gradlepluginexternalproperties` package.
 
+## Compatibility
+
+The latest release is unit tested against the following gradle versions (see [gradle-plugin-external-properties-tests](https://github.com/sidney-simmons/gradle-plugin-external-properties-tests)):
+
+* 6.3
+* 6.4
+* 6.4.1
+* 6.5
+* 6.5.1
+* 6.6
+* 6.6.1
+* 6.7
+* 6.7.1
+* 6.8
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
