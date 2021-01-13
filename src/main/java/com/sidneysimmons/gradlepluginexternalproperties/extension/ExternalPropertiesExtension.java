@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gradle.api.Project;
 import org.gradle.api.provider.ListProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Plugin extension for configuring this plugin.
  */
 public class ExternalPropertiesExtension {
+
+    private static final Logger log = LoggerFactory.getLogger(ExternalPropertiesExtension.class);
 
     public static final String NAME = "externalProperties";
     private Project project;
@@ -36,7 +40,7 @@ public class ExternalPropertiesExtension {
      * @param file the file
      */
     public void propertiesFileResolver(File file) {
-        appendResolver(new PropertiesFileResolver(project, file));
+        appendResolver(new PropertiesFileResolver(file));
     }
 
     /**
@@ -68,6 +72,7 @@ public class ExternalPropertiesExtension {
         List<PropertyResolver> newResolvers = new ArrayList<>(existingResolvers);
         newResolvers.add(resolver);
         resolvers.set(newResolvers);
+        log.debug("Appended property resolver " + resolver + " as resolver #" + newResolvers.size() + " for project " + project + ".");
     }
 
 }

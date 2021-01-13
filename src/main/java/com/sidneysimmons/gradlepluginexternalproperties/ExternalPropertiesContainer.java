@@ -172,18 +172,19 @@ public class ExternalPropertiesContainer {
     public List<PropertyResolver> getDefaultResolvers() {
         if (defaultResolvers == null) {
             defaultResolvers = new ArrayList<>();
+            log.debug("Configuring plugin provided default property resolvers for project " + project + ".");
 
             // 1) Build the user directory file resolver
             String userHomeDirectory = System.getProperty("user.home");
             String projectNameHierarchy = buildProjectNameHierarchy();
             String userDirectoryResolverString = MessageFormat.format("{0}/.gradle-plugin-external-properties/{1}/build.properties", userHomeDirectory,
                     projectNameHierarchy);
-            PropertyResolver userDirectoryResolver = new PropertiesFileResolver(project, new File(userDirectoryResolverString));
+            PropertyResolver userDirectoryResolver = new PropertiesFileResolver(new File(userDirectoryResolverString));
             defaultResolvers.add(userDirectoryResolver);
 
             // 2) Build the project directory file resolver
             String projectDirectoryResolverString = MessageFormat.format("{0}/build.properties", project.getProjectDir().getAbsolutePath());
-            PropertyResolver projectDirectoryResolver = new PropertiesFileResolver(project, new File(projectDirectoryResolverString));
+            PropertyResolver projectDirectoryResolver = new PropertiesFileResolver(new File(projectDirectoryResolverString));
             defaultResolvers.add(projectDirectoryResolver);
         }
         return defaultResolvers;
