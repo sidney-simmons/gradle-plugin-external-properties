@@ -74,6 +74,14 @@ externalProperties {
 }
 ```
 
+## Tasks
+
+```
+External Properties tasks
+-------------------------
+showPropertyResolvers - Prints this project's configured property resolvers.
+```
+
 ## Logging
 
 This plugin logs several pieces of troubleshooting information at the DEBUG level.  Enable logging through gradle with the "--debug" command (or any other similar approach) and look for logs coming from classes in the `com.sidneysimmons.gradlepluginexternalproperties` package.
